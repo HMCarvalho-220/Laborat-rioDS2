@@ -1,29 +1,32 @@
 package com.labds2.AlugeulCarro.Model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Pedido {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private String status; // "PENDENTE", "APROVADO", "REJEITADO", "FINALIZADO"
+    private Double valorTotal;
     
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cliente_id")
+    
     private Cliente cliente;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "automovel_id")
     private Automovel automovel;
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -48,11 +51,19 @@ public class Pedido {
         this.dataFim = dataFim;
     }
 
-    public String getStatus() {
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public StatusPedido getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusPedido status) {
         this.status = status;
     }
 
